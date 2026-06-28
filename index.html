@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>&#37073;&#26607;&#28828;&#36716;&#30424;</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="&#37073;&#26607;&#28828;&#36716;&#30424;&#39318;&#39029;">
+          <span class="brand-mark">K</span>
+          <span>&#37073;&#26607;&#28828;&#36716;&#30424;</span>
+        </a>
+        <nav class="nav-links" aria-label="&#20027;&#23548;&#33322;">
+          <a href="#wheel">&#25105;&#30340;&#36716;&#30424;</a>
+          <a href="#templates">&#27169;&#26495;</a>
+          <a href="#history">&#32467;&#26524;&#35760;&#24405;</a>
+          <a href="#photos">&#29031;&#29255;&#24211;</a>
+        </nav>
+        <button class="ghost-button" id="saveTopButton" type="button">&#20445;&#23384;&#37197;&#32622;</button>
+      </header>
+
+      <section class="hero-grid">
+        <aside class="profile-panel" id="photos">
+          <div class="support-chip">RED SUPPORT COLOR</div>
+          <div class="portrait-stack" aria-label="&#37073;&#26607;&#28828;&#29031;&#29255;&#23637;&#31034;">
+            <img class="portrait portrait-main" src="assets/kewei-stage.png" alt="&#37073;&#26607;&#28828;&#29031;&#29255;" />
+            <img class="portrait portrait-small top" src="assets/kewei-maid.png" alt="&#37073;&#26607;&#28828;&#22899;&#20166;&#35013;&#29031;&#29255;" />
+            <img class="portrait portrait-small bottom" src="assets/kewei-casual.png" alt="&#37073;&#26607;&#28828;&#26085;&#24120;&#29031;&#29255;" />
+          </div>
+          <div class="profile-copy">
+            <p class="eyebrow">SNH48 Team HII</p>
+            <h1>&#37073;&#26607;&#28828; <span>Zheng KeWei</span></h1>
+            <p class="profile-desc">&#25226;&#27599;&#22825;&#30340;&#23567;&#20915;&#23450;&#20132;&#32473;&#19968;&#26522;&#32418;&#33394;&#36716;&#30424;&#12290;&#27599;&#20010;&#20154;&#37117;&#21487;&#20197;&#25913;&#25104;&#33258;&#24049;&#30340;&#36873;&#39033;&#65292;&#20445;&#23384;&#21518;&#21482;&#24433;&#21709;&#26412;&#26426;&#27983;&#35272;&#22120;&#12290;</p>
+            <div class="profile-facts">
+              <span>10.06</span>
+              <span>162cm</span>
+              <span>&#30005;&#24433; / &#32654;&#39135; / &#25442;&#35013;&#28216;&#25103;</span>
+            </div>
+          </div>
+        </aside>
+
+        <section class="wheel-zone" id="wheel" aria-labelledby="wheelTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Editable Wheel</p>
+              <h2 id="wheelTitle">&#20170;&#22825;&#36716;&#21040;&#20160;&#20040;&#65311;</h2>
+            </div>
+            <span class="save-state" id="saveState">&#24050;&#36733;&#20837;&#40664;&#35748;&#27169;&#26495;</span>
+          </div>
+
+          <div class="wheel-wrap">
+            <canvas id="wheelCanvas" width="620" height="620" aria-label="&#21487;&#32534;&#36753;&#36716;&#30424;"></canvas>
+            <div class="wheel-pointer" aria-hidden="true"></div>
+            <div class="wheel-center">
+              <span>&#37073;&#26607;&#28828;</span>
+              <strong>SPIN</strong>
+            </div>
+          </div>
+
+          <div class="wheel-actions">
+            <button class="primary-button" id="spinButton" type="button">&#24320;&#22987;&#36716;&#21160;</button>
+            <button class="secondary-button" id="shuffleButton" type="button">&#38543;&#26426;&#25171;&#20081;</button>
+          </div>
+
+          <div class="result-strip" id="history">
+            <div>
+              <p class="eyebrow">&#26412;&#27425;&#32467;&#26524;</p>
+              <strong id="resultText">&#31561;&#24453;&#36716;&#21160;</strong>
+            </div>
+            <img src="assets/kewei-maid.png" alt="&#32467;&#26524;&#29031;&#29255;&#32553;&#30053;&#22270;" />
+          </div>
+        </section>
+
+        <aside class="editor-panel" id="templates" aria-labelledby="editorTitle">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">For Everyone</p>
+              <h2 id="editorTitle">&#32534;&#36753;&#36716;&#30424;</h2>
+            </div>
+          </div>
+          <p class="editor-note">&#27599;&#20010;&#35775;&#38382;&#32773;&#37117;&#21487;&#20197;&#33258;&#30001;&#20462;&#25913;&#36873;&#39033;&#12289;&#39068;&#33394;&#21644;&#27010;&#29575;&#12290;&#27010;&#29575;&#21512;&#35745;&#24517;&#39035;&#20026; 100%&#12290;</p>
+          <div class="probability-total" id="probabilityTotal">&#27010;&#29575;&#21512;&#35745; 100%</div>
+
+          <div class="option-list" id="optionList"></div>
+
+          <div class="editor-actions">
+            <button class="secondary-button" id="addButton" type="button">&#28155;&#21152;&#36873;&#39033;</button>
+            <button class="primary-button slim" id="saveButton" type="button">&#20445;&#23384;&#25105;&#30340;&#36716;&#30424;</button>
+            <button class="text-button" id="resetButton" type="button">&#37325;&#32622;&#40664;&#35748;</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <dialog class="result-dialog" id="resultDialog">
+      <button class="close-button" id="closeDialog" type="button" aria-label="&#20851;&#38381;&#32467;&#26524;">&#20851;&#38381;</button>
+      <img src="assets/kewei-stage.png" alt="&#37073;&#26607;&#28828;&#32467;&#26524;&#23637;&#31034;" />
+      <p class="eyebrow">&#26412;&#27425;&#36716;&#30424;&#32467;&#26524;</p>
+      <h2 id="dialogResult">&#22870;&#21169;&#22902;&#33590;</h2>
+      <button class="primary-button slim" id="spinAgainButton" type="button">&#20877;&#36716;&#19968;&#27425;</button>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
