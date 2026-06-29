@@ -51,7 +51,8 @@ body::after {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -252,13 +253,6 @@ h1 span {
   color: var(--muted);
   font-size: 17px;
   font-weight: 600;
-}
-
-.profile-desc,
-.editor-note {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
 }
 
 .profile-facts {
@@ -500,10 +494,6 @@ h1 span {
   object-fit: cover;
 }
 
-.editor-note {
-  margin: 12px 0 18px;
-}
-
 .probability-total {
   display: flex;
   align-items: center;
@@ -516,6 +506,73 @@ h1 span {
   background: linear-gradient(135deg, #fff, var(--red-soft));
   font-size: 14px;
   font-weight: 900;
+}
+
+.active-option-editor {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.active-option-editor > label,
+.active-option-fields span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.active-option-editor textarea,
+.active-option-fields input[type="number"] {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  border-radius: 14px;
+  color: var(--ink);
+  background: #fff;
+  outline: 1px solid transparent;
+}
+
+.active-option-editor textarea {
+  min-height: 74px;
+  resize: vertical;
+  padding: 12px;
+  line-height: 1.45;
+}
+
+.active-option-editor textarea:focus,
+.active-option-fields input:focus {
+  outline-color: rgba(201, 31, 55, 0.38);
+}
+
+.active-option-fields {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) 38px;
+  gap: 8px;
+  align-items: end;
+}
+
+.active-option-fields label {
+  display: grid;
+  gap: 6px;
+}
+
+.active-option-fields input[type="color"] {
+  width: 52px;
+  height: 42px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 14px;
+  padding: 0;
+  background: transparent;
+}
+
+.active-option-fields input[type="number"] {
+  height: 42px;
+  padding: 0 12px;
 }
 
 .probability-total.invalid {
@@ -534,39 +591,59 @@ h1 span {
 
 .option-row {
   display: grid;
-  grid-template-columns: 34px 1fr 82px 34px 54px;
+  grid-template-columns: minmax(0, 1fr) 54px;
   align-items: center;
   gap: 8px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 9px;
+  padding: 7px;
   background: rgba(255, 255, 255, 0.68);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-.option-row input[type="color"] {
-  width: 34px;
-  height: 34px;
-  overflow: hidden;
-  border: 0;
-  border-radius: 50%;
-  padding: 0;
-  background: transparent;
+.option-row.active {
+  border-color: rgba(201, 31, 55, 0.36);
+  box-shadow: 0 10px 24px rgba(201, 31, 55, 0.11);
 }
 
-.option-row input[type="text"],
-.option-row input[type="number"] {
+.option-row:hover {
+  transform: translateY(-1px);
+}
+
+.option-select {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
   width: 100%;
-  min-width: 0;
+  min-height: 42px;
   border: 0;
-  border-radius: 12px;
-  padding: 9px 10px;
+  border-radius: 13px;
+  padding: 0 10px;
   color: var(--ink);
   background: #fff;
-  outline: 1px solid transparent;
+  text-align: left;
 }
 
-.option-row input:focus {
-  outline-color: rgba(201, 31, 55, 0.38);
+.option-dot {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(122, 22, 39, 0.14);
+}
+
+.option-name {
+  overflow: hidden;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.option-probability {
+  color: var(--red-deep);
+  font-size: 13px;
+  font-weight: 900;
 }
 
 .percent-badge {
@@ -699,11 +776,7 @@ h1 span {
   }
 
   .option-row {
-    grid-template-columns: 32px 1fr 64px 48px;
-  }
-
-  .delete-button {
-    grid-column: 2 / 5;
+    grid-template-columns: minmax(0, 1fr) 52px;
   }
 }
 

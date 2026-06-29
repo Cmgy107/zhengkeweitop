@@ -24,6 +24,9 @@ const resetButton = document.querySelector("#resetButton");
 const resultText = document.querySelector("#resultText");
 const saveState = document.querySelector("#saveState");
 const probabilityTotal = document.querySelector("#probabilityTotal");
+const activeLabelInput = document.querySelector("#activeLabelInput");
+const activeColorInput = document.querySelector("#activeColorInput");
+const activeProbabilityInput = document.querySelector("#activeProbabilityInput");
 const resultDialog = document.querySelector("#resultDialog");
 const dialogResult = document.querySelector("#dialogResult");
 const closeDialog = document.querySelector("#closeDialog");
@@ -33,6 +36,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let options = loadOptions();
 let rotation = 0;
 let isSpinning = false;
+let activeIndex = 0;
 
 function loadOptions() {
   try {
@@ -47,7 +51,7 @@ function loadOptions() {
 function normalizeOptions(items) {
   return items
     .map((item, index) => ({
-      label: String(item.label || `\u9009\u9879 ${index + 1}`).slice(0, 14),
+      label: String(item.label || `\u9009\u9879 ${index + 1}`).slice(0, 40),
       color: /^#[0-9a-f]{6}$/i.test(item.color) ? item.color : defaultOptions[index % defaultOptions.length].color,
       probability: Math.max(0, Math.min(100, Number(item.probability) || 0))
     }))
@@ -141,24 +145,42 @@ function isLightColor(hex) {
 }
 
 function renderEditor() {
+  renderOptionRows();
+  renderActiveEditor();
+  updateTotalState();
+}
+
+function renderOptionRows() {
   optionList.innerHTML = "";
   options.forEach((item, index) => {
     const row = document.createElement("div");
-    row.className = "option-row";
+    row.className = `option-row${index === activeIndex ? " active" : ""}`;
     row.innerHTML = `
-      <input type="color" aria-label="\u9009\u9879\u989c\u8272" value="${item.color}" data-field="color" data-index="${index}">
-      <input type="text" aria-label="\u9009\u9879\u540d\u79f0" value="${escapeAttribute(item.label)}" maxlength="14" data-field="label" data-index="${index}">
-      <input type="number" aria-label="\u6982\u7387\u767e\u5206\u6bd4" title="\u76f4\u63a5\u586b\u5199\u8fd9\u4e00\u9879\u7684\u6982\u7387\uff0c\u6240\u6709\u9879\u5408\u8ba1\u9700\u8981 100%" min="0" max="100" step="0.1" value="${formatPercent(item.probability)}" data-field="probability" data-index="${index}">
-      <span class="percent-badge">%</span>
+      <button class="option-select" type="button" data-select="${index}">
+        <span class="option-dot" style="background:${item.color}"></span>
+        <span class="option-name">${escapeHtml(item.label)}</span>
+        <span class="option-probability">${formatPercent(item.probability)}%</span>
+      </button>
       <button class="delete-button" type="button" data-delete="${index}">\u5220\u9664</button>
     `;
     optionList.append(row);
   });
-  updateTotalState();
 }
 
 function escapeAttribute(value) {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
+}
+
+function escapeHtml(value) {
+  return escapeAttribute(value).replaceAll(">", "&gt;");
+}
+
+function renderActiveEditor() {
+  if (activeIndex >= options.length) activeIndex = options.length - 1;
+  const item = options[activeIndex];
+  activeLabelInput.value = item.label;
+  activeColorInput.value = item.color;
+  activeProbabilityInput.value = formatPercent(item.probability);
 }
 
 function updateTotalState() {
@@ -171,18 +193,20 @@ function updateTotalState() {
   if (!valid) saveState.textContent = "\u6982\u7387\u5408\u8ba1\u9700\u8981\u7b49\u4e8e 100%";
 }
 
-function updateOption(event) {
-  const target = event.target;
-  const index = Number(target.dataset.index);
-  const field = target.dataset.field;
-  if (!field || Number.isNaN(index)) return;
+function updateActiveOption(event) {
+  const item = options[activeIndex];
+  if (!item) return;
 
-  if (field === "probability") {
-    options[index].probability = Math.max(0, Math.min(100, Number(target.value) || 0));
-  } else {
-    options[index][field] = field === "label" ? target.value.trim() || `\u9009\u9879 ${index + 1}` : target.value;
+  if (event.target === activeLabelInput) {
+    item.label = activeLabelInput.value.trim() || `\u9009\u9879 ${activeIndex + 1}`;
   }
+  if (event.target === activeColorInput) item.color = activeColorInput.value;
+  if (event.target === activeProbabilityInput) {
+    item.probability = Math.max(0, Math.min(100, Number(activeProbabilityInput.value) || 0));
+  }
+
   if (isValidTotal()) saveState.textContent = "\u6709\u672a\u4fdd\u5b58\u4fee\u6539";
+  renderOptionRows();
   updateTotalState();
   drawWheel();
 }
@@ -195,6 +219,7 @@ function deleteOption(event) {
     return;
   }
   options.splice(index, 1);
+  if (activeIndex >= options.length) activeIndex = options.length - 1;
   render();
   saveState.textContent = "\u6709\u672a\u4fdd\u5b58\u4fee\u6539";
 }
@@ -209,8 +234,16 @@ function addOption() {
     color: defaultOptions[options.length % defaultOptions.length].color,
     probability: 0
   });
+  activeIndex = options.length - 1;
   render();
   saveState.textContent = "\u6709\u672a\u4fdd\u5b58\u4fee\u6539";
+}
+
+function selectOption(event) {
+  const index = Number(event.target.closest("[data-select]")?.dataset.select);
+  if (Number.isNaN(index)) return;
+  activeIndex = index;
+  renderEditor();
 }
 
 function pickWeightedOption() {
@@ -293,8 +326,11 @@ function render() {
   updateTotalState();
 }
 
-optionList.addEventListener("input", updateOption);
+optionList.addEventListener("click", selectOption);
 optionList.addEventListener("click", deleteOption);
+activeLabelInput.addEventListener("input", updateActiveOption);
+activeColorInput.addEventListener("input", updateActiveOption);
+activeProbabilityInput.addEventListener("input", updateActiveOption);
 spinButton.addEventListener("click", spin);
 centerSpinButton.addEventListener("click", spin);
 spinAgainButton.addEventListener("click", () => {
