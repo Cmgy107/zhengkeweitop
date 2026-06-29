@@ -24,6 +24,17 @@ body {
   min-height: 100vh;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.36) 42%, transparent 58%);
+  opacity: 0.46;
+  transform: translateX(-38%);
+  animation: stageSweep 9s ease-in-out infinite;
+}
+
 button,
 input {
   font: inherit;
@@ -51,6 +62,7 @@ button {
   background: rgba(255, 255, 255, 0.72);
   box-shadow: 0 14px 40px rgba(97, 12, 28, 0.08);
   backdrop-filter: blur(18px);
+  animation: riseIn 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .brand,
@@ -111,6 +123,7 @@ button {
   overflow: hidden;
   border-radius: 28px;
   padding: 18px;
+  animation: riseIn 620ms 90ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .support-chip {
@@ -130,11 +143,24 @@ button {
   margin-top: 16px;
 }
 
+.portrait-stack::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 24px;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.38) 48%, transparent 68%);
+  opacity: 0;
+  transform: translateX(-42%);
+  transition: opacity 260ms ease, transform 620ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 .portrait {
   display: block;
   object-fit: cover;
   border: 5px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 18px 45px rgba(55, 7, 17, 0.18);
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 260ms ease, filter 260ms ease;
 }
 
 .portrait-main {
@@ -158,6 +184,25 @@ button {
 .portrait-small.bottom {
   left: -5px;
   bottom: 0;
+}
+
+.portrait-stack:hover::after {
+  opacity: 1;
+  transform: translateX(46%);
+}
+
+.portrait-stack:hover .portrait-main {
+  transform: scale(1.035) translateY(-4px);
+  box-shadow: 0 26px 60px rgba(201, 31, 55, 0.22);
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.portrait-stack:hover .portrait-small.top {
+  transform: translate(-5px, 5px) scale(1.025);
+}
+
+.portrait-stack:hover .portrait-small.bottom {
+  transform: translate(6px, -4px) scale(1.025);
 }
 
 .profile-copy {
@@ -227,6 +272,11 @@ h1 span {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 244, 246, 0.72)),
     radial-gradient(circle at 50% 36%, rgba(201, 31, 55, 0.12), transparent 44%);
+  animation: riseIn 620ms 170ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.editor-panel {
+  animation: riseIn 620ms 250ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .section-heading {
@@ -253,7 +303,20 @@ h1 span {
   margin: 12px auto 18px;
 }
 
+.wheel-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent, rgba(201, 31, 55, 0.32), transparent 34%, rgba(255, 255, 255, 0.52), transparent 62%);
+  filter: blur(8px);
+  opacity: 0.5;
+  animation: haloTurn 8s linear infinite;
+}
+
 #wheelCanvas {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   filter: drop-shadow(0 22px 44px rgba(87, 12, 25, 0.2));
@@ -286,6 +349,7 @@ h1 span {
   background: linear-gradient(135deg, #df2940, #791122);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34), 0 12px 28px rgba(90, 7, 20, 0.26);
   text-align: center;
+  z-index: 2;
 }
 
 .wheel-center span {
@@ -510,6 +574,12 @@ h1 span {
   background: rgba(255, 251, 251, 0.96);
   box-shadow: 0 30px 90px rgba(47, 3, 12, 0.28);
   text-align: center;
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+}
+
+.result-dialog[open] {
+  animation: dialogIn 260ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .result-dialog::backdrop {
@@ -604,5 +674,50 @@ h1 span {
   to {
     transform: scale(1.04);
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 18px 38px rgba(201, 31, 55, 0.36);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes haloTurn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes stageSweep {
+  0%,
+  62% {
+    transform: translateX(-45%);
+  }
+  100% {
+    transform: translateX(45%);
+  }
+}
+
+@keyframes dialogIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }

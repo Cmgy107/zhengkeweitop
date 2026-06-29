@@ -27,6 +27,7 @@ const resultDialog = document.querySelector("#resultDialog");
 const dialogResult = document.querySelector("#dialogResult");
 const closeDialog = document.querySelector("#closeDialog");
 const spinAgainButton = document.querySelector("#spinAgainButton");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let options = loadOptions();
 let rotation = 0;
@@ -238,12 +239,24 @@ function spin() {
   const selected = pickWeightedOption();
   const centerAngle = optionCenterAngle(selected);
   const fullSpins = 5 + Math.floor(Math.random() * 3);
-  rotation = rotation + fullSpins * 360 + (270 - centerAngle - (rotation % 360));
+  const startRotation = rotation;
+  const targetRotation = rotation + fullSpins * 360 + (270 - centerAngle - (rotation % 360));
   isSpinning = true;
   spinButton.disabled = true;
   wheelWrap.classList.add("spinning");
   resultText.textContent = "\u8f6c\u52a8\u4e2d...";
-  canvas.style.transform = `rotate(${rotation}deg)`;
+  rotation = targetRotation;
+
+  if (reduceMotion.matches) {
+    canvas.style.transform = `rotate(${targetRotation}deg)`;
+  } else {
+    canvas.style.transition = "transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1)";
+    canvas.style.transform = `rotate(${startRotation - 14}deg)`;
+    window.setTimeout(() => {
+      canvas.style.transition = "transform 4.8s cubic-bezier(0.13, 0.78, 0.14, 1)";
+      canvas.style.transform = `rotate(${targetRotation}deg)`;
+    }, 190);
+  }
 
   window.setTimeout(() => {
     isSpinning = false;
@@ -252,7 +265,7 @@ function spin() {
     resultText.textContent = selected.label;
     dialogResult.textContent = selected.label;
     if (typeof resultDialog.showModal === "function") resultDialog.showModal();
-  }, 4900);
+  }, reduceMotion.matches ? 400 : 5200);
 }
 
 function shuffleOptions() {
