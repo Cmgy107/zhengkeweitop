@@ -1,13 +1,13 @@
-const storageKey = "kewei-wheel-options-v3";
+const storageKey = "kewei-wheel-options-v4";
 const defaultOptions = [
-  { label: "\u4eca\u665a\u5403\u706b\u9505", color: "#c91f37", probability: 15 },
-  { label: "\u770b\u4e00\u573a\u7535\u5f71", color: "#f06b78", probability: 15 },
-  { label: "\u7ec3\u6b4c 30 \u5206\u949f", color: "#8f1728", probability: 12 },
-  { label: "\u5956\u52b1\u5976\u8336", color: "#f5a0a8", probability: 15 },
-  { label: "\u62cd\u4e00\u5f20\u81ea\u62cd", color: "#b72235", probability: 12 },
-  { label: "\u6574\u7406\u6b4c\u5355", color: "#ffd6db", probability: 10 },
-  { label: "\u4f11\u606f\u5341\u5206\u949f", color: "#7a1020", probability: 10 },
-  { label: "\u968f\u673a\u821e\u53f0\u66f2", color: "#e54559", probability: 11 }
+  { label: "\u4eca\u665a\u5403\u706b\u9505", color: "#d71928", probability: 15 },
+  { label: "\u770b\u4e00\u573a\u7535\u5f71", color: "#9f1421", probability: 15 },
+  { label: "\u7ec3\u6b4c 30 \u5206\u949f", color: "#6f0b14", probability: 12 },
+  { label: "\u5956\u52b1\u5976\u8336", color: "#e33b45", probability: 15 },
+  { label: "\u62cd\u4e00\u5f20\u81ea\u62cd", color: "#b81421", probability: 12 },
+  { label: "\u771f\u5fc3\u8bdd\u6311\u6218", color: "#3a0509", probability: 10 },
+  { label: "\u518d\u6765\u4e00\u6b21", color: "#7d1019", probability: 10 },
+  { label: "\u601d\u5ff5\u5e94\u63f4", color: "#ef4c55", probability: 11 }
 ];
 
 const canvas = document.querySelector("#wheelCanvas");
