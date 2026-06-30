@@ -1157,10 +1157,11 @@ body {
 }
 
 .brand-mark {
-  width: 50px;
+  width: 58px;
   height: 50px;
-  font-size: 26px;
-  letter-spacing: -0.08em;
+  font-size: 21px;
+  letter-spacing: -0.04em;
+  padding-right: 1px;
 }
 
 .nav-links {
@@ -1201,7 +1202,7 @@ body {
   border-radius: 18px;
   background: linear-gradient(145deg, rgba(255, 30, 44, 0.14), transparent 42%, rgba(255, 30, 44, 0.1));
   box-shadow: 0 0 32px rgba(240, 42, 52, 0.34), inset 0 0 42px rgba(0, 0, 0, 0.5);
-  transform: rotate(-3.2deg);
+  transform: none;
   transform-origin: left center;
 }
 
@@ -1219,7 +1220,7 @@ body {
   border: 2px solid rgba(255, 68, 78, 0.9);
   border-radius: 16px;
   box-shadow: 0 28px 55px rgba(0, 0, 0, 0.55), 0 0 30px rgba(240, 42, 52, 0.36);
-  transform: rotate(-3.2deg);
+  transform: none;
   transform-origin: left center;
 }
 
@@ -1227,34 +1228,44 @@ body {
   border-width: 4px;
   border-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5), 0 0 18px rgba(240, 42, 52, 0.34);
+  cursor: pointer;
 }
 
 .portrait-small.top {
-  top: 88px;
-  right: -2px;
-  width: 118px;
-  height: 156px;
-  transform: rotate(-3.2deg);
+  top: 178px;
+  right: 2px;
+  width: 108px;
+  height: 144px;
+  transform: none;
 }
 
 .portrait-small.bottom {
   left: 18px;
-  bottom: 60px;
-  width: 126px;
-  height: 158px;
-  transform: rotate(-3.2deg);
+  bottom: 48px;
+  width: 112px;
+  height: 142px;
+  transform: none;
 }
 
 .portrait-stack:hover .portrait-main {
-  transform: rotate(-3.2deg) translateY(-4px) scale(1.025);
+  transform: translateY(-4px) scale(1.018);
 }
 
 .portrait-stack:hover .portrait-small.top {
-  transform: rotate(-3.2deg) translate(-3px, 3px) scale(1.02);
+  transform: translate(-3px, 3px) scale(1.02);
 }
 
 .portrait-stack:hover .portrait-small.bottom {
-  transform: rotate(-3.2deg) translate(4px, -3px) scale(1.02);
+  transform: translate(4px, -3px) scale(1.02);
+}
+
+.portrait-small:focus-visible {
+  outline: 3px solid rgba(255, 76, 86, 0.75);
+  outline-offset: 4px;
+}
+
+.portrait-swapping {
+  animation: portraitSwap 280ms ease both;
 }
 
 .profile-copy {
@@ -1472,9 +1483,9 @@ h1 span {
   }
 
   .brand-mark {
-    width: 42px;
+    width: 46px;
     height: 42px;
-    font-size: 26px;
+    font-size: 18px;
   }
 
   .ghost-button {
@@ -1538,5 +1549,20 @@ h1 span {
 
   h1 {
     font-size: 46px;
+  }
+}
+
+@keyframes portraitSwap {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  45% {
+    opacity: 0.3;
+    transform: scale(0.965);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }

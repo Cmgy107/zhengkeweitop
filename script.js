@@ -31,6 +31,8 @@ const resultDialog = document.querySelector("#resultDialog");
 const dialogResult = document.querySelector("#dialogResult");
 const closeDialog = document.querySelector("#closeDialog");
 const spinAgainButton = document.querySelector("#spinAgainButton");
+const portraitMain = document.querySelector(".portrait-main");
+const portraitThumbs = document.querySelectorAll(".portrait-small");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let options = loadOptions();
@@ -320,6 +322,29 @@ function resetOptions() {
   saveState.textContent = "\u5df2\u91cd\u7f6e\u9ed8\u8ba4\u6a21\u677f";
 }
 
+function swapPortrait(event) {
+  const thumb = event.currentTarget;
+  if (!portraitMain || thumb === portraitMain) return;
+
+  const swap = () => {
+    [portraitMain.src, thumb.src] = [thumb.src, portraitMain.src];
+    [portraitMain.alt, thumb.alt] = [thumb.alt, portraitMain.alt];
+  };
+
+  if (reduceMotion.matches) {
+    swap();
+    return;
+  }
+
+  portraitMain.classList.add("portrait-swapping");
+  thumb.classList.add("portrait-swapping");
+  window.setTimeout(swap, 130);
+  window.setTimeout(() => {
+    portraitMain.classList.remove("portrait-swapping");
+    thumb.classList.remove("portrait-swapping");
+  }, 280);
+}
+
 function render() {
   renderEditor();
   drawWheel();
@@ -343,5 +368,14 @@ saveButton.addEventListener("click", () => saveOptions());
 saveTopButton.addEventListener("click", () => saveOptions());
 resetButton.addEventListener("click", resetOptions);
 closeDialog.addEventListener("click", () => resultDialog.close());
+portraitThumbs.forEach((thumb) => {
+  thumb.addEventListener("click", swapPortrait);
+  thumb.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      swapPortrait(event);
+    }
+  });
+});
 
 render();
