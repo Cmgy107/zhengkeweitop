@@ -1159,7 +1159,8 @@ body {
 .brand-mark {
   width: 50px;
   height: 50px;
-  font-size: 32px;
+  font-size: 26px;
+  letter-spacing: -0.08em;
 }
 
 .nav-links {
@@ -1190,18 +1191,18 @@ body {
 .portrait-stack {
   height: 560px;
   margin-top: 0;
-  perspective: 900px;
 }
 
 .portrait-stack::before {
   content: "";
   position: absolute;
-  inset: 18px 22px 70px 2px;
+  inset: 18px 10px 58px 8px;
   border: 1px solid rgba(255, 58, 68, 0.78);
   border-radius: 18px;
   background: linear-gradient(145deg, rgba(255, 30, 44, 0.14), transparent 42%, rgba(255, 30, 44, 0.1));
   box-shadow: 0 0 32px rgba(240, 42, 52, 0.34), inset 0 0 42px rgba(0, 0, 0, 0.5);
-  transform: rotate(-2.2deg);
+  transform: rotate(-3.2deg);
+  transform-origin: left center;
 }
 
 .portrait-stack::after {
@@ -1211,14 +1212,15 @@ body {
 
 .portrait-main {
   position: absolute;
-  top: 30px;
-  left: 12px;
-  width: 318px;
-  height: 420px;
+  top: 34px;
+  left: 18px;
+  width: 330px;
+  height: 438px;
   border: 2px solid rgba(255, 68, 78, 0.9);
   border-radius: 16px;
   box-shadow: 0 28px 55px rgba(0, 0, 0, 0.55), 0 0 30px rgba(240, 42, 52, 0.36);
-  transform: rotate(-2.2deg);
+  transform: rotate(-3.2deg);
+  transform-origin: left center;
 }
 
 .portrait-small {
@@ -1228,21 +1230,35 @@ body {
 }
 
 .portrait-small.top {
-  top: 76px;
-  right: 4px;
-  width: 124px;
-  height: 164px;
+  top: 88px;
+  right: -2px;
+  width: 118px;
+  height: 156px;
+  transform: rotate(-3.2deg);
 }
 
 .portrait-small.bottom {
-  left: 16px;
-  bottom: 36px;
-  width: 136px;
-  height: 170px;
+  left: 18px;
+  bottom: 60px;
+  width: 126px;
+  height: 158px;
+  transform: rotate(-3.2deg);
+}
+
+.portrait-stack:hover .portrait-main {
+  transform: rotate(-3.2deg) translateY(-4px) scale(1.025);
+}
+
+.portrait-stack:hover .portrait-small.top {
+  transform: rotate(-3.2deg) translate(-3px, 3px) scale(1.02);
+}
+
+.portrait-stack:hover .portrait-small.bottom {
+  transform: rotate(-3.2deg) translate(4px, -3px) scale(1.02);
 }
 
 .profile-copy {
-  margin-top: -86px;
+  margin-top: -82px;
   padding: 0 8px 0 10px;
 }
 
@@ -1512,12 +1528,12 @@ h1 span {
   }
 
   .portrait-main {
-    width: calc(100% - 34px);
+    width: calc(100% - 42px);
     height: 360px;
   }
 
   .profile-copy {
-    margin-top: -70px;
+    margin-top: -54px;
   }
 
   h1 {
